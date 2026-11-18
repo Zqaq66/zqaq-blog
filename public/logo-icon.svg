@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Q ring: open at the south-east where the tail leaves -->
+  <path d="M 310.6 386.1 A 148 148 0 1 1 382.1 314.6" fill="none" stroke="#e8edf3" stroke-width="30" stroke-linecap="round"/>
+  <!-- Z -->
+  <polyline points="176,192 322,192 176,320 322,320" fill="none" stroke="#e8edf3" stroke-width="30" stroke-linecap="square" stroke-linejoin="miter"/>
+  <!-- Q tail, branching from the centre of the Z diagonal -->
+  <line x1="256" y1="264" x2="366" y2="374" stroke="#e8edf3" stroke-width="24" stroke-linecap="round"/>
+  <!-- signal dot -->
+  <circle cx="398" cy="398" r="22" fill="#4cc9f0"/>
+</svg>
