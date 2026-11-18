@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tools } from '../../data/tools';
+import { fmtDate } from '../../lib/date';
+
+interface Item {
+  kind: '文章' | '工具';
+  title: string;
+  desc: string;
+  meta: string;
+  url: string;
+  external: boolean;
+  search: string;
+}
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const items: Item[] = [
+  ...posts.map((p) => ({
+    kind: '文章' as const,
+    title: p.data.title,
+    desc: p.data.description,
+    meta: `${fmtDate(p.data.pubDate)} · ${p.data.category}`,
+    url: `/posts/${p.id}/`,
+    external: false,
+    search: `${p.data.title} ${p.data.description} ${p.data.category} ${p.data.tags.join(' ')}`.toLowerCase(),
+  })),
+  ...tools.map((t) => ({
+    kind: '工具' as const,
+    title: t.name,
+    desc: t.desc,
+    meta: `${t.repo} · ${t.language} · ★ ${t.stars}`,
+    url: t.url,
+    external: true,
+    search: `${t.name} ${t.repo} ${t.desc} ${t.language}`.toLowerCase(),
+  })),
+];
+---
+
+<BaseLayout title="搜索" description="搜索本站文章与工具库。" active="search">
+  <section class="page-head">
+    <h1>搜索</h1>
+    <p>在全部文章和工具库里按关键词查找。</p>
+  </section>
+
+  <input
+    id="site-search"
+    class="search-box"
+    type="search"
+    placeholder="输入关键词，如 Agent、浏览器、Rust…"
+    aria-label="搜索本站"
+    autofocus
+  />
+  <p class="result-count" id="search-count"></p>
+
+  <div id="search-list">
+    {items.map((item) => (
+      <article class="post-item" data-search={item.search}>
+        <div class="meta">
+          <span class={item.kind === '工具' ? 'tag plain' : 'tag'}>{item.kind}</span>
+          <span>{item.meta}</span>
+        </div>
+        <h3>
+          <a
+            href={item.url}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener' : undefined}
+          >{item.title}</a>
+        </h3>
+        <p>{item.desc}</p>
+      </article>
+    ))}
+  </div>
+  <div class="empty" id="search-empty" hidden>没有找到匹配的内容，换个关键词试试。</div>
+
+  <script>
+    const input = document.getElementById('site-search') as HTMLInputElement | null;
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('#search-list .post-item'));
+    const empty = document.getElementById('search-empty');
+    const count = document.getElementById('search-count');
+
+    const apply = () => {
+      const q = (input?.value ?? '').trim().toLowerCase();
+      let visible = 0;
+      for (const el of rows) {
+        const hit = !q || (el.dataset.search ?? '').includes(q);
+        el.style.display = hit ? '' : 'none';
+        if (hit) visible++;
+      }
+      if (empty) empty.hidden = visible > 0;
+      if (count) {
+        count.textContent = q
+          ? `“${input?.value.trim()}”共找到 ${visible} 条`
+          : `全部 ${rows.length} 条内容（文章 + 工具）`;
+      }
+    };
+
+    input?.addEventListener('input', apply);
+    const initial = new URLSearchParams(location.search).get('q');
+    if (initial && input) input.value = initial;
+    apply();
+  </script>
+</BaseLayout>

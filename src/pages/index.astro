@@ -3,16 +3,16 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sections } from '../data/sections';
 import { tools } from '../data/tools';
+import { fmtDate } from '../lib/date';
 
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const featuredTools = tools.slice(0, 3);
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <BaseLayout title="zqaq 科技雷达" active="home">
-  <section class="hero">
+  <section class="page-head">
     <h1>zqaq 科技雷达</h1>
     <p>每天追踪全球科技热点，实测 GitHub 开源工具。国内外信源交叉验证，只聊技术，不涉政。</p>
   </section>
@@ -20,9 +20,9 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
   <h2 class="block-title">最新文章</h2>
   <div class="post-list">
     {posts.map((post) => (
-      <article class="post-card">
+      <article class="post-item">
         <div class="meta">
-          <span>{fmt(post.data.pubDate)}</span>
+          <span>{fmtDate(post.data.pubDate)}</span>
           <span class="tag">{post.data.category}</span>
         </div>
         <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
@@ -32,19 +32,19 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
   </div>
 
   <h2 class="block-title">栏目</h2>
-  <div class="grid-2">
+  <div class="section-list">
     {sections.map((s) => (
-      <article class="section-card">
-        <h3><a href={`/${s.slug}/`}>{s.name}</a></h3>
-        <p>{s.desc}</p>
-      </article>
+      <a class="section-item" href={`/${s.slug}/`}>
+        <span class="s-name">{s.name}</span>
+        <span class="s-desc">{s.desc}</span>
+      </a>
     ))}
   </div>
 
   <h2 class="block-title">工具库精选</h2>
-  <div class="post-list">
+  <div>
     {featuredTools.map((t) => (
-      <article class="tool-card">
+      <article class="tool-item">
         <div class="tool-head">
           <h3><a href={t.url} target="_blank" rel="noopener">{t.name}</a></h3>
           <span class="stars">★ {t.stars}</span>

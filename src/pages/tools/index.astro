@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { tools } from '../../data/tools';
+
+const languages = [...new Set(tools.map((t) => t.language))].sort();
 ---
 
-<BaseLayout title="工具库" description="推荐过的 GitHub 开源工具沉淀清单，可搜索。" active="tools">
-  <section class="hero">
+<BaseLayout title="工具库" description="推荐过的 GitHub 开源工具沉淀清单，可搜索、可按语言筛选。" active="tools">
+  <section class="page-head">
     <h1>工具库</h1>
     <p>每一篇实测里推荐过的开源工具都会沉淀在这里，方便随时查用。星数为收录当日的快照。</p>
   </section>
@@ -13,14 +15,24 @@ import { tools } from '../../data/tools';
     id="tool-search"
     class="search-box"
     type="search"
-    placeholder="搜索工具名、用途或语言…"
+    placeholder="搜索工具名、用途或仓库…"
     aria-label="搜索工具"
   />
 
-  <div class="post-list" id="tool-list">
+  <div class="chip-row" role="group" aria-label="按语言筛选">
+    <button type="button" class="chip" data-lang="" aria-pressed="true">全部语言</button>
+    {languages.map((lang) => (
+      <button type="button" class="chip" data-lang={lang} aria-pressed="false">{lang}</button>
+    ))}
+  </div>
+
+  <p class="result-count" id="tool-count"></p>
+
+  <div id="tool-list">
     {tools.map((t) => (
       <article
-        class="tool-card"
+        class="tool-item"
+        data-lang={t.language}
         data-search={`${t.name} ${t.repo} ${t.desc} ${t.language}`.toLowerCase()}
       >
         <div class="tool-head">
@@ -29,29 +41,45 @@ import { tools } from '../../data/tools';
           <span class="lang">{t.language}</span>
         </div>
         <p>{t.desc}</p>
-        <div class="meta" style="margin-top:0.5rem">
+        <div class="meta">
           <span>{t.repo}</span>
           <span>收录于 {t.addedDate}</span>
         </div>
       </article>
     ))}
   </div>
-  <div class="empty" id="tool-empty" hidden>没有找到匹配的工具。</div>
+  <div class="empty" id="tool-empty" hidden>没有找到匹配的工具，换个关键词或语言试试。</div>
 
   <script>
-    const input = document.getElementById('tool-search');
-    const cards = Array.from(document.querySelectorAll('.tool-card'));
+    const input = document.getElementById('tool-search') as HTMLInputElement | null;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('#tool-list .tool-item'));
     const empty = document.getElementById('tool-empty');
-    input?.addEventListener('input', () => {
-      const q = (input as HTMLInputElement).value.trim().toLowerCase();
+    const count = document.getElementById('tool-count');
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-lang]'));
+    let activeLang = '';
+
+    const apply = () => {
+      const q = (input?.value ?? '').trim().toLowerCase();
       let visible = 0;
-      for (const card of cards) {
-        const el = card as HTMLElement;
-        const hit = !q || (el.dataset.search ?? '').includes(q);
+      for (const el of cards) {
+        const hitText = !q || (el.dataset.search ?? '').includes(q);
+        const hitLang = !activeLang || el.dataset.lang === activeLang;
+        const hit = hitText && hitLang;
         el.style.display = hit ? '' : 'none';
         if (hit) visible++;
       }
-      if (empty) (empty as HTMLElement).hidden = visible > 0;
+      if (empty) empty.hidden = visible > 0;
+      if (count) count.textContent = `共 ${cards.length} 个工具，当前显示 ${visible} 个`;
+    };
+
+    input?.addEventListener('input', apply);
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        activeLang = chip.dataset.lang ?? '';
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        apply();
+      });
     });
+    apply();
   </script>
 </BaseLayout>
