@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { sections } from '../../data/sections';
+
+export function getStaticPaths() {
+  return sections.map((s) => ({ params: { section: s.slug }, props: { section: s } }));
+}
+
+const { section } = Astro.props;
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.section === section.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={section.name} description={section.desc} active={section.slug}>
+  <section class="hero">
+    <h1>{section.name}</h1>
+    <p>{section.desc}</p>
+  </section>
+
+  {posts.length > 0 ? (
+    <div class="post-list">
+      {posts.map((post) => (
+        <article class="post-card">
+          <div class="meta">
+            <span>{fmt(post.data.pubDate)}</span>
+            <span class="tag">{post.data.category}</span>
+          </div>
+          <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+          <p>{post.data.description}</p>
+        </article>
+      ))}
+    </div>
+  ) : (
+    <div class="empty">筹备中，敬请期待。</div>
+  )}
+</BaseLayout>

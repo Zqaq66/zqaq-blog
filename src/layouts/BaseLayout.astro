@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: string;
+}
+
+const { title, description = '每天追踪全球科技热点，实测 GitHub 开源工具。', active = '' } = Astro.props;
+const siteName = 'zqaq 科技雷达';
+const pageTitle = title === siteName ? title : `${title} · ${siteName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const nav = [
+  { href: '/', label: '首页', key: 'home' },
+  { href: '/hot/', label: '热点速递', key: 'hot' },
+  { href: '/reviews/', label: '开源工具实测', key: 'reviews' },
+  { href: '/ai-agent/', label: 'AI 与 Agent 动态', key: 'ai-agent' },
+  { href: '/rankings/', label: '榜单解读', key: 'rankings' },
+  { href: '/tools/', label: '工具库', key: 'tools' },
+  { href: '/about/', label: '关于', key: 'about' },
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={siteName} href="/rss.xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/">zqaq <span class="radar">科技雷达</span></a>
+        <nav class="main-nav" aria-label="主导航">
+          {nav.map((item) => (
+            <a href={item.href} class={active === item.key ? 'active' : undefined}>{item.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <span>© 2026 zqaq · zqaq.cc.cd</span>
+        <span>
+          <a href="/rss.xml">RSS</a> · <a href="/tools/">工具库</a> · <a href="/about/">关于</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
