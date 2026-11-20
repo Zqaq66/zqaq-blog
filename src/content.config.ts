@@ -7,8 +7,8 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
-    // 栏目 slug：hot（热点速递）/ reviews（开源工具实测）/ ai-agent（AI 与 Agent 动态）/ rankings（榜单解读）
-    section: z.enum(['hot', 'reviews', 'ai-agent', 'rankings']),
+    // 栏目 slug：hot（热点速递）/ reviews（开源工具实测）/ ai-agent（AI 与 Agent 动态）/ rankings（榜单解读）/ science（科普）
+    section: z.enum(['hot', 'reviews', 'ai-agent', 'rankings', 'science']),
     category: z.string(),
     tags: z.array(z.string()).default([]),
   }),
