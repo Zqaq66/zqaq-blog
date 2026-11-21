@@ -25,19 +25,18 @@ const languages = [...new Set(tools.map((t) => t.language))].sort();
     ))}
   </div>
 
-  <div id="tool-list">
+  <div class="group" id="tool-list">
     {tools.map((t) => (
       <article
-        class="tool-item"
+        class="row linked"
         data-lang={t.language}
         data-search={`${t.name} ${t.repo} ${t.desc} ${t.language}`.toLowerCase()}
       >
-        <div class="tool-head">
+        <div class="row-main">
           <h3><a href={t.url} target="_blank" rel="noopener">{t.name}</a></h3>
-          <span class="stars">★ {t.stars}</span>
-          <span class="lang">{t.language}</span>
+          <p class="row-desc">{t.desc}</p>
         </div>
-        <p>{t.desc}</p>
+        <span class="row-side"><span class="stars">★ {t.stars}</span>{t.language}</span>
       </article>
     ))}
   </div>
@@ -45,7 +44,7 @@ const languages = [...new Set(tools.map((t) => t.language))].sort();
 
   <script>
     const input = document.getElementById('tool-search') as HTMLInputElement | null;
-    const cards = Array.from(document.querySelectorAll<HTMLElement>('#tool-list .tool-item'));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('#tool-list .row'));
     const empty = document.getElementById('tool-empty');
     const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-lang]'));
     let activeLang = '';

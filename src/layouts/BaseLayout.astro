@@ -5,9 +5,10 @@ interface Props {
   title: string;
   description?: string;
   active?: string;
+  tone?: 'grouped' | 'plain';
 }
 
-const { title, description, active = '' } = Astro.props;
+const { title, description, active = '', tone = 'grouped' } = Astro.props;
 const siteName = 'zqaq';
 const pageTitle = title === siteName ? title : `${title} · ${siteName}`;
 const metaDescription = description ?? title;
@@ -45,7 +46,7 @@ const nav = [
     <link rel="alternate" type="application/rss+xml" title={siteName} href="/rss.xml" />
     <!-- Cloudflare Web Analytics --><script is:inline type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "b0f3abdec10b497993c9d84850400cd6"}'></script><!-- End Cloudflare Web Analytics -->
   </head>
-  <body>
+  <body class={tone === 'plain' ? 'plain' : undefined}>
     <header class="site-header">
       <div class="container header-inner">
         <a class="logo" href="/"><img class="logo-mark" src="/logo-icon.svg" alt="" width="22" height="22" />zqaq</a>

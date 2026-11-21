@@ -20,7 +20,7 @@ const prevPost = idx > 0 ? all[idx - 1] : null;
 const nextPost = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} active="home">
+<BaseLayout title={post.data.title} description={post.data.description} active="home" tone="plain">
   <article class="article">
     <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
     <h1>{post.data.title}</h1>
@@ -40,9 +40,19 @@ const nextPost = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
     </div>
 
     {(prevPost || nextPost) && (
-      <nav class="post-nav" aria-label="上一篇与下一篇">
-        {prevPost && <a href={`/posts/${prevPost.id}/`}>← {prevPost.data.title}</a>}
-        {nextPost && <a class="pn-next" href={`/posts/${nextPost.id}/`}>{nextPost.data.title} →</a>}
+      <nav class="group post-nav" aria-label="上一篇与下一篇">
+        {prevPost && (
+          <a class="row" href={`/posts/${prevPost.id}/`}>
+            <span class="chev">‹</span>
+            <span class="row-main"><h3>{prevPost.data.title}</h3></span>
+          </a>
+        )}
+        {nextPost && (
+          <a class="row" href={`/posts/${nextPost.id}/`}>
+            <span class="row-main"><h3>{nextPost.data.title}</h3></span>
+            <span class="chev">›</span>
+          </a>
+        )}
       </nav>
     )}
   </article>

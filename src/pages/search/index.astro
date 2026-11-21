@@ -51,17 +51,20 @@ const items: Item[] = [
     autofocus
   />
 
-  <div id="search-list">
+  <div class="group" id="search-list">
     {items.map((item) => (
-      <article class="post-item" data-search={item.search}>
-        <div class="meta"><span>{item.meta}</span></div>
-        <h3>
-          <a
-            href={item.url}
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener' : undefined}
-          >{item.title}</a>
-        </h3>
+      <article class="row linked" data-search={item.search}>
+        <div class="row-main">
+          <h3>
+            <a
+              href={item.url}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noopener' : undefined}
+            >{item.title}</a>
+          </h3>
+          <p class="row-desc">{item.desc}</p>
+        </div>
+        <span class="row-side">{item.meta}</span>
       </article>
     ))}
   </div>
@@ -69,7 +72,7 @@ const items: Item[] = [
 
   <script>
     const input = document.getElementById('site-search') as HTMLInputElement | null;
-    const rows = Array.from(document.querySelectorAll<HTMLElement>('#search-list .post-item'));
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('#search-list .row'));
     const empty = document.getElementById('search-empty');
 
     const apply = () => {

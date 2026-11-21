@@ -20,11 +20,14 @@ const posts = (await getCollection('posts'))
   </section>
 
   {posts.length > 0 ? (
-    <div class="post-list">
+    <div class="group">
       {posts.map((post) => (
-        <article class="post-item">
-          <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
-          <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+        <article class="row linked">
+          <div class="row-main">
+            <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+            <p class="row-desc">{post.data.description}</p>
+          </div>
+          <span class="row-side">{fmtDate(post.data.pubDate)}</span>
         </article>
       ))}
     </div>

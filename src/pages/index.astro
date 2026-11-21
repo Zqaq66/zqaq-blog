@@ -7,21 +7,38 @@ import { fmtDate } from '../lib/date';
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const [lead, ...rest] = posts;
+const countOf = (slug: string) => posts.filter((p) => p.data.section === slug).length;
 ---
 
 <BaseLayout title="zqaq" active="home">
-  <div class="post-list">
-    {posts.map((post) => (
-      <article class="post-item">
-        <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
-        <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+  {lead && (
+    <article class="lead-story">
+      <div class="meta"><span>{fmtDate(lead.data.pubDate)}</span></div>
+      <h2><a href={`/posts/${lead.id}/`}>{lead.data.title}</a></h2>
+      <p>{lead.data.description}</p>
+    </article>
+  )}
+
+  <div class="group">
+    {rest.map((post) => (
+      <article class="row linked">
+        <div class="row-main">
+          <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
+          <p class="row-desc">{post.data.description}</p>
+        </div>
+        <span class="row-side">{fmtDate(post.data.pubDate)}</span>
       </article>
     ))}
   </div>
 
-  <nav class="section-line" aria-label="栏目">
-    {sections.map((s) => (
-      <a href={`/${s.slug}/`}>{s.name}</a>
+  <p class="group-label">栏目</p>
+  <nav class="group" aria-label="栏目">
+    {sections.filter((s) => countOf(s.slug) > 0).map((s) => (
+      <a class="row" href={`/${s.slug}/`}>
+        <span class="row-main"><h3>{s.name}</h3></span>
+        <span class="row-side">{countOf(s.slug)}<span class="chev">›</span></span>
+      </a>
     ))}
   </nav>
 </BaseLayout>
