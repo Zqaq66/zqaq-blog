@@ -75,4 +75,4 @@ tags: ["黎曼猜想", "数学", "科普"]
 
 ---
 
-*本文根据同名科普视频改写，视频版在 YouTube 上（链接发布后回填）。更多内容见 zqaq.cc.cd。*
+*本文根据同名科普视频改写，完整视频在 YouTube：[黎曼猜想：一天两份证明](https://www.youtube.com/watch?v=4_hWHiX0gRc)。更多内容见 zqaq.cc.cd。*
