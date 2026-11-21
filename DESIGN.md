@@ -105,7 +105,8 @@ Scale: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64。
 ## Components
 
 - **导航**：高 52，glass 粘性；链接 small 号 secondary 色，当前页 text 色；logo 22px 深底小方标（radius 6）。
-- **分组列表行**：最小高 44，内边距 12/16；整行可点；hover 填充 --hover（200ms）；标题 row-title，摘要 small 号 secondary 单行省略；右侧 caption 日期。
+- **分组列表行**：最小高 44，内边距 12/16；整行可点；hover 填充 --hover（200ms）；标题 row-title，摘要 small 号 secondary 两行截断（line-clamp 2）；右侧 caption 日期。
+- **防孤字**：头条标题 text-wrap: balance、头条摘要与行摘要 text-wrap: pretty，避免最后一行只剩一两个字（2026-11-21 线上审片发现头条摘要吊「了。」后定）。
 - **领起文章**（首页第一篇）：display 标题 + lead 摘要，不进分组卡，是全页唯一的视觉主角。
 - **筛选片**：高 32，pill，1px field 描边，secondary 字；选中 = action 填充 + on-action 字（不只靠颜色：填充本身即状态）；:active 缩放 0.97。
 - **输入框**：高 44，radius 12，field-bg，1px field 边；:focus 边变 focus 色 + 3px 淡蓝环。
