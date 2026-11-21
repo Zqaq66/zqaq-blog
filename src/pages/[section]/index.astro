@@ -14,26 +14,21 @@ const posts = (await getCollection('posts'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<BaseLayout title={section.name} description={section.desc} active={section.slug}>
+<BaseLayout title={section.name} description={section.desc} active="home">
   <section class="page-head">
     <h1>{section.name}</h1>
-    <p>{section.desc}</p>
   </section>
 
   {posts.length > 0 ? (
     <div class="post-list">
       {posts.map((post) => (
         <article class="post-item">
-          <div class="meta">
-            <span>{fmtDate(post.data.pubDate)}</span>
-            <span class="tag">{post.data.category}</span>
-          </div>
+          <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
           <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
-          <p>{post.data.description}</p>
         </article>
       ))}
     </div>
   ) : (
-    <div class="empty">筹备中，敬请期待。</div>
+    <div class="empty">暂无文章。</div>
   )}
 </BaseLayout>

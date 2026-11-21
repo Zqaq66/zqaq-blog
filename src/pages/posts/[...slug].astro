@@ -16,23 +16,17 @@ const all = (await getCollection('posts')).sort(
   (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
 const idx = all.findIndex((p) => p.id === post.id);
-const prevPost = idx > 0 ? all[idx - 1] : null; // 更早的一篇
-const nextPost = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null; // 更新的一篇
+const prevPost = idx > 0 ? all[idx - 1] : null;
+const nextPost = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} active={post.data.section}>
+<BaseLayout title={post.data.title} description={post.data.description} active="home">
   <article class="article">
-    <div class="meta">
-      <span>{fmtDate(post.data.pubDate)}</span>
-      <span class="tag">{post.data.category}</span>
-      {post.data.tags.map((t) => <span class="tag plain">{t}</span>)}
-    </div>
+    <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
     <h1>{post.data.title}</h1>
-    <p class="lede">{post.data.description}</p>
 
     {toc.length >= 3 && (
-      <nav class="toc" aria-label="本页目录">
-        <p class="toc-title">本页目录</p>
+      <nav class="toc" aria-label="目录">
         <ol>
           {toc.map((h) => (
             <li><a href={`#${h.slug}`}>{h.text}</a></li>
@@ -47,21 +41,9 @@ const nextPost = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null; // 更�
 
     {(prevPost || nextPost) && (
       <nav class="post-nav" aria-label="上一篇与下一篇">
-        {prevPost && (
-          <a href={`/posts/${prevPost.id}/`}>
-            <span class="pn-label">← 上一篇</span>
-            <span class="pn-title">{prevPost.data.title}</span>
-          </a>
-        )}
-        {nextPost && (
-          <a class="pn-next" href={`/posts/${nextPost.id}/`}>
-            <span class="pn-label">下一篇 →</span>
-            <span class="pn-title">{nextPost.data.title}</span>
-          </a>
-        )}
+        {prevPost && <a href={`/posts/${prevPost.id}/`}>← {prevPost.data.title}</a>}
+        {nextPost && <a class="pn-next" href={`/posts/${nextPost.id}/`}>{nextPost.data.title} →</a>}
       </nav>
     )}
-
-    <p class="back-link"><a href={`/${post.data.section}/`}>← 返回{post.data.category}</a></p>
   </article>
 </BaseLayout>

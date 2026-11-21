@@ -5,28 +5,25 @@ import { tools } from '../../data/tools';
 const languages = [...new Set(tools.map((t) => t.language))].sort();
 ---
 
-<BaseLayout title="工具库" description="推荐过的 GitHub 开源工具沉淀清单，可搜索、可按语言筛选。" active="tools">
+<BaseLayout title="工具" active="tools">
   <section class="page-head">
-    <h1>工具库</h1>
-    <p>每一篇实测里推荐过的开源工具都会沉淀在这里，方便随时查用。星数为收录当日的快照。</p>
+    <h1>工具</h1>
   </section>
 
   <input
     id="tool-search"
     class="search-box"
     type="search"
-    placeholder="搜索工具名、用途或仓库…"
+    placeholder="搜索"
     aria-label="搜索工具"
   />
 
   <div class="chip-row" role="group" aria-label="按语言筛选">
-    <button type="button" class="chip" data-lang="" aria-pressed="true">全部语言</button>
+    <button type="button" class="chip" data-lang="" aria-pressed="true">全部</button>
     {languages.map((lang) => (
       <button type="button" class="chip" data-lang={lang} aria-pressed="false">{lang}</button>
     ))}
   </div>
-
-  <p class="result-count" id="tool-count"></p>
 
   <div id="tool-list">
     {tools.map((t) => (
@@ -41,20 +38,15 @@ const languages = [...new Set(tools.map((t) => t.language))].sort();
           <span class="lang">{t.language}</span>
         </div>
         <p>{t.desc}</p>
-        <div class="meta">
-          <span>{t.repo}</span>
-          <span>收录于 {t.addedDate}</span>
-        </div>
       </article>
     ))}
   </div>
-  <div class="empty" id="tool-empty" hidden>没有找到匹配的工具，换个关键词或语言试试。</div>
+  <div class="empty" id="tool-empty" hidden>没有匹配的工具。</div>
 
   <script>
     const input = document.getElementById('tool-search') as HTMLInputElement | null;
     const cards = Array.from(document.querySelectorAll<HTMLElement>('#tool-list .tool-item'));
     const empty = document.getElementById('tool-empty');
-    const count = document.getElementById('tool-count');
     const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.chip[data-lang]'));
     let activeLang = '';
 
@@ -69,7 +61,6 @@ const languages = [...new Set(tools.map((t) => t.language))].sort();
         if (hit) visible++;
       }
       if (empty) empty.hidden = visible > 0;
-      if (count) count.textContent = `共 ${cards.length} 个工具，当前显示 ${visible} 个`;
     };
 
     input?.addEventListener('input', apply);

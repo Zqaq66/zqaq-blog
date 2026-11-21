@@ -7,18 +7,15 @@ interface Props {
   active?: string;
 }
 
-const { title, description = '每天追踪全球科技热点，实测 GitHub 开源工具。', active = '' } = Astro.props;
-const siteName = 'zqaq 科技雷达';
+const { title, description, active = '' } = Astro.props;
+const siteName = 'zqaq';
 const pageTitle = title === siteName ? title : `${title} · ${siteName}`;
+const metaDescription = description ?? title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 const nav = [
   { href: '/', label: '首页', key: 'home' },
-  { href: '/hot/', label: '热点速递', key: 'hot' },
-  { href: '/reviews/', label: '开源工具实测', key: 'reviews' },
-  { href: '/ai-agent/', label: 'AI 与 Agent 动态', key: 'ai-agent' },
-  { href: '/rankings/', label: '榜单解读', key: 'rankings' },
-  { href: '/tools/', label: '工具库', key: 'tools' },
+  { href: '/tools/', label: '工具', key: 'tools' },
   { href: '/search/', label: '搜索', key: 'search' },
   { href: '/about/', label: '关于', key: 'about' },
 ];
@@ -36,12 +33,12 @@ const nav = [
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={pageTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -51,20 +48,8 @@ const nav = [
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="logo" href="/"><img class="logo-mark" src="/logo-icon.svg" alt="" width="34" height="34" />zqaq <span class="radar">科技雷达</span></a>
-        <button
-          class="nav-toggle"
-          id="nav-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="打开菜单"
-        >
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-        <nav class="main-nav" id="site-nav" aria-label="主导航">
+        <a class="logo" href="/"><img class="logo-mark" src="/logo-icon.svg" alt="" width="22" height="22" />zqaq</a>
+        <nav class="main-nav" aria-label="主导航">
           {nav.map((item) => (
             <a href={item.href} class={active === item.key ? 'active' : undefined}>{item.label}</a>
           ))}
@@ -76,35 +61,13 @@ const nav = [
     </main>
     <footer class="site-footer">
       <div class="container">
-        <span>© 2026 zqaq · <a href="https://zqaq.cc.cd">zqaq.cc.cd</a></span>
+        <span>© 2026 zqaq</span>
         <span class="foot-links">
           <a href="/rss.xml">RSS</a>
-          <a href="/search/">搜索</a>
-          <a href="/tools/">工具库</a>
           <a href="https://www.youtube.com/@qaqZ-w2d4p" target="_blank" rel="noopener">YouTube</a>
           <a href="https://x.com/Zqaqpb" target="_blank" rel="noopener">X</a>
-          <a href="/about/">关于</a>
         </span>
       </div>
     </footer>
-    <script>
-      const toggle = document.getElementById('nav-toggle');
-      const nav = document.getElementById('site-nav');
-      const setOpen = (open: boolean) => {
-        nav?.classList.toggle('open', open);
-        toggle?.setAttribute('aria-expanded', String(open));
-        toggle?.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
-      };
-      toggle?.addEventListener('click', () => {
-        setOpen(!nav?.classList.contains('open'));
-      });
-      nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') setOpen(false);
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth > 860) setOpen(false);
-      });
-    </script>
   </body>
 </html>

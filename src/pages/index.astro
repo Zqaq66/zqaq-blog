@@ -2,57 +2,26 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { sections } from '../data/sections';
-import { tools } from '../data/tools';
 import { fmtDate } from '../lib/date';
 
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const featuredTools = tools.slice(0, 3);
 ---
 
-<BaseLayout title="zqaq 科技雷达" active="home">
-  <section class="page-head">
-    <h1>zqaq 科技雷达</h1>
-    <p>每天追踪全球科技热点，实测 GitHub 开源工具。国内外信源交叉验证，专注科技与开发者工具。</p>
-  </section>
-
-  <h2 class="block-title">最新文章</h2>
+<BaseLayout title="zqaq" active="home">
   <div class="post-list">
     {posts.map((post) => (
       <article class="post-item">
-        <div class="meta">
-          <span>{fmtDate(post.data.pubDate)}</span>
-          <span class="tag">{post.data.category}</span>
-        </div>
+        <div class="meta"><span>{fmtDate(post.data.pubDate)}</span></div>
         <h3><a href={`/posts/${post.id}/`}>{post.data.title}</a></h3>
-        <p>{post.data.description}</p>
       </article>
     ))}
   </div>
 
-  <h2 class="block-title">栏目</h2>
-  <div class="section-list">
+  <nav class="section-line" aria-label="栏目">
     {sections.map((s) => (
-      <a class="section-item" href={`/${s.slug}/`}>
-        <span class="s-name">{s.name}</span>
-        <span class="s-desc">{s.desc}</span>
-      </a>
+      <a href={`/${s.slug}/`}>{s.name}</a>
     ))}
-  </div>
-
-  <h2 class="block-title">工具库精选</h2>
-  <div>
-    {featuredTools.map((t) => (
-      <article class="tool-item">
-        <div class="tool-head">
-          <h3><a href={t.url} target="_blank" rel="noopener">{t.name}</a></h3>
-          <span class="stars">★ {t.stars}</span>
-          <span class="lang">{t.language}</span>
-        </div>
-        <p>{t.desc}</p>
-      </article>
-    ))}
-  </div>
-  <p style="margin-top:1rem"><a href="/tools/">查看全部工具 →</a></p>
+  </nav>
 </BaseLayout>
