@@ -1,6 +1,6 @@
 ---
 title: "榜单解读 · 11月23日：GTA 6 重编译三天冲近一万五千星，GitHub 热榜被游戏项目接管"
-description: "Leonida 三天从 0 冲到 14,855 星，单日涨了 9,720，是本周 GitHub 涨势最猛的新仓；同主题的 Xbox2Windows 和 xbox-emulator 也在同一天冒头。rust-anything 同样在涨，逼近八千星。"
+description: "Leonida 四天从 0 冲到 31,349 星，单日涨了 16,494，GitHub 热榜继续被游戏重编译项目接管；rust-anything 破了八千星。"
 pubDate: 2026-11-23
 section: "rankings"
 category: "榜单解读"
@@ -33,3 +33,13 @@ Leonida（ItsNotRexed/Leonida）11 月 20 日创建，做的是把 GTA 6 的 Xbo
 这一周的榜单格局很清楚：游戏重编译靠一个未满足的大需求爆发，Rust 重构工具靠持续的实用价值稳步上涨。前者看的是热度能维持多久，后者看的是涨势能持续几天。两类项目都值得继续盯着。
 
 仓库：https://github.com/ItsNotRexed/Leonida 、https://github.com/R0Y00/Xbox2Windows 、https://github.com/omonkeyz/xbox-emulator 、https://github.com/erkamyaman/rust-anything
+
+## 更新 · 11月24日：Leonida 破三万星，单日再涨一万六千多
+
+Leonida 今天早上 31,349 星，昨天这个时候 14,855，单日涨了 16,494，fork 到了 2,841。从 11 月 20 日创建到现在四天，星数翻了两番都不止，涨势比头三天还猛。
+
+这波热度还在扩散：昨天刚创建的 VIctory（Marvisak/VIctory，同样是尝试在 PC 上跑 GTA VI）已经 1,371 星；Xbox Series 兼容层 xcl（ivall/xcl）到了 1,666 星。同一个主题下，现在已经有五个仓库过千星。
+
+对照组也在动：rust-anything 今天 8,703 星，昨天 7,983，单日 +720，破了八千星；它的“反向”项目 fast-anything 三天冲到 3,112 星，昨天 1,870，单日 +1,242。
+
+数据为 2026-11-24 快照，星数来自 GitHub API 当日读数与仓库页面。
