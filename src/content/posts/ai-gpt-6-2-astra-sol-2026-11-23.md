@@ -29,3 +29,9 @@ OpenAI 在 11 月 17 日发布了 GPT-6.2 Astra 和 Sol。这是 Claude 5.2 和 
 这是一次增量升级，不是换代。模型还是 Astra/Sol 这条双线，架构和定位都没变，变的主要是价格和细节能力。值得注意的信号在时间点上：三家实验室一周之内连发模型，目标都指向同一个方向——让 Agent 长时间干活，同时把每次任务的成本压下来。GPT-6.2 的定价调整，正是这个方向上的一步。
 
 来源：https://community.openai.com/t/gpt-6-2-astra-and-sol-are-now-available/1417531
+
+## 更新 · 11月26日：Astra 在代码高尔夫上超过人类纪录
+
+go/codegolf 基准 11 月 26 日更新了成绩：GPT-6.2 Astra 在 JavaScript、Python、C++ 三项合计 92.265%，超过谷歌员工人类纪录的 87.533%，是第一个做到这点的模型，三项每一项都超过了人类。这个基准比的是把解法写多短，256 道题、每题 30 分钟，模型在 96 个格子里赢了 62 格，人类还守着 14 格。
+
+来源：https://bjin.github.io/go-codegolf-benchmark/
